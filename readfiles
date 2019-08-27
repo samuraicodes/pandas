@@ -1,17 +1,45 @@
-import pandas
+import pandas as pd
+import psycopg2
+import example_psql as creds
+import numpy as np
 
-dataframe = pandas.read_excel('pandas.xlsx', 'Tabellenblatt1') #can be writed like df
+conn_string = 'host='+ creds.PGHOST + " port=" + "5432" + " dbname=" + creds.PGDATABASE + " user=" \
++ creds.PGUSER + " password=" + creds.PGPASSWORD
+conn = psycopg2.connect(conn_string)
+print("Connected!")
 
+
+dataframe = pd.read_excel('pandas.xlsx', 'Tabellenblatt1') #can be writed like df
 print(dataframe) #this method give us the type from dataframe -> <class 'pandas.core.frame.DataFrame'>
 
-dataframe_cvs = pandas.read_csv('pandas.csv')
-
+dataframe_cvs = pd.read_csv('pandas.csv')
 print(dataframe_cvs)
 
-dataframe_txt = pandas.read_csv('pandas.txt') #With the cvs read method we can read txt files too.
-
+dataframe_txt = pd.read_csv('pandas.txt') #With the cvs read method we can read txt files too.
 print(dataframe_txt)
 
-dataframe_txt_tab = pandas.read_csv('pandas2.txt', delimiter='/') #if we use delimiter we can change , for other symbol
-
+dataframe_txt_tab = pd.read_csv('pandas2.txt', delimiter='/') #if we use delimiter we can change , for other symbol
 print(dataframe_txt_tab)
+
+dataframe_sql = pd.read_sql('select * from prueba', conn) #select direct from a database
+print(dataframe_sql)
+
+select_by_value = dataframe_sql.loc[dataframe_sql['name'] == 'value'] #select a part from a database using the value
+print(select_by_value)
+
+select_by_index = dataframe_sql.loc[0] #select a part from a database using the index
+print(select_by_index)
+
+change_column = dataframe_sql.name.astype(str) #change column type
+print(change_column)
+
+print(dataframe_sql.apply(np.sum)) # apply a function to a dataframe
+print(dataframe_sql['id'].apply(np.sum)) # apply a function to a selected part from a dataframe
+
+print(dataframe_sql.sort_values(by=['name'])) # sort the df output by value
+
+print(dataframe_sql.drop_duplicates('name')) #drop duplicated entrys
+
+print(dataframe_sql.duplicated('name')) #show us if the df have a duplicated value
+
+

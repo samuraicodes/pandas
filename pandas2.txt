@@ -1,0 +1,6 @@
+first name/ last name/ age
+Dinko/ Eichin/ 32
+María Paz/ Ramirez/ 30
+Darién/ Eichin/ 10
+Amara/ Eichin/ 4
+
